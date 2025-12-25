@@ -1,15 +1,23 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
 
-const TUSHARE_TOKEN = 'c5b2ba4c663e31b419e0c16b34f0d0bb08b7b53fdc1a037c00ddd3db';
-const TUSHARE_API = 'http://api.tushare.pro';
+const TUSHARE_TOKEN = process.env.TUSHARE_TOKEN;
+const TUSHARE_API = process.env.TUSHARE_API || 'http://api.tushare.pro';
+
+// 检查必需的环境变量
+if (!TUSHARE_TOKEN) {
+  console.error('错误: 未设置TUSHARE_TOKEN环境变量');
+  console.error('请创建.env文件并设置TUSHARE_TOKEN=your_token');
+  process.exit(1);
+}
 
 // 中证指数代码配置（含发布日期）
 const INDEX_CONFIG = {
